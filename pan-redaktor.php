@@ -1,8 +1,5 @@
 <?php
-ob_start(); //http://www.lessthanweb.com/blog/wordpress-and-wp_redirect-function-problem
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+ob_start();
 
 /*
      * Plugin Name: Pan Redaktor
