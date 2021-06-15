@@ -6,7 +6,7 @@ ob_start();
      * Plugin URI: http://presspro.dev/pan-redaktor
      * Description: Pan Redaktor: plugin, który zadba o to, aby w Twoim tekście nie pozostawały wiszące spójniki.
      * Author: presspro::dev
-     * Version: 0.5.1
+     * Version: 0.6
      * Author URI: http://presspro.dev/
      */
 
@@ -22,7 +22,8 @@ class panRedaktor{
     private static $plugin_options = array('pr_selectors','pr_mode');
     // check plugin_Settings.php for options key names
 
-    private $plugin_version = '1.0';
+    private $plugin_mode = 'dev'; // if dev mode, update version on activate if newer than previous
+    private $plugin_version = '0.6';
     private $user_capability = 'manage_options';
     private $model;
     private $action_token = 'pan-redaktor-action';
@@ -31,6 +32,9 @@ class panRedaktor{
 
     function __construct() {
         $this->model = new panRedaktor_Model();
+
+        //nadpisanie wersji w trybie developerskim
+        if($this->plugin_mode == 'dev') update_option(static::$plugin_id.'-version', $this->plugin_version);
 
         //uruchamianie podczas aktywacji
         register_activation_hook(__FILE__, array($this, 'onActivate'));
@@ -183,6 +187,9 @@ class panRedaktor{
         }
     }
 
+    public function getOptions() {
+        return static::$plugin_options;
+    }
 
     private function render($view, array $args = array(), $mode = FALSE){
 
@@ -206,14 +213,20 @@ class panRedaktor{
 
 
     public function setFlashMsg($message, $status = 'updated'){
-        $_SESSION[__CLASS__]['message'] = $message;
-        $_SESSION[__CLASS__]['status'] = $status;
+        // since 0.5 uses cookies & jquery to show messages, no session to avoid conflict with WP REST API
+        if($status == 'updated') {
+            setCookie('message',$message);
+            setCookie('status',$status);
+        }
+        else {
+            add_action('admin_footer', function() use ($status,$message) { echo '<script id="ba-wp-admin-error-message" type="text/javascript">jQuery(document).ready(function() { jQuery("#message").show().addClass("'.$status.'").find("p").text("'.$message.'"); jQuery(".description.error").prev().addClass("input-error"); });</script>'; });
+        }
     }
 
     public function getFlashMsg(){
-        if(isset($_SESSION[__CLASS__]['message'])){
-            $msg = $_SESSION[__CLASS__]['message'];
-            unset($_SESSION[__CLASS__]);
+        if(isset($_COOKIE['message'])) {
+            $msg = $_COOKIE['message'];
+            setCookie('message','',1);
             return $msg;
         }
 
@@ -221,15 +234,15 @@ class panRedaktor{
     }
 
     public function getFlashMsgStatus(){
-        if(isset($_SESSION[__CLASS__]['status'])){
-            return $_SESSION[__CLASS__]['status'];
+        if(isset($_COOKIE['status'])) {
+            return $_COOKIE['status'];
         }
 
         return NULL;
     }
 
     public function hasFlashMsg(){
-        return isset($_SESSION[__CLASS__]['message']);
+        return isset($_COOKIE['message']);
     }
 
 

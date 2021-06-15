@@ -1,17 +1,46 @@
 .pr-option-wrapper {
     padding: 1em;
-    border: 1px solid lightskyblue;
+    border: 1px solid #2271b1;
     border-radius: 4px;
     margin-bottom: 1.25em;
+    min-width: 320px;
+    width: 50%;
 }
 .pr-option-wrapper label {
-    color: lightskyblue;
-    font-weight: bold;
+    color: #2271b1;
     font-size: 1.25em;
 }
-.pr-option-wrapper .pr-input {
+.pr-option-wrapper label:not(:first-child) {
     display: block;
-    margin: 2em 0 1em;
+    padding-top: 1em;
+    margin-top: 1em;
+    border-top: 1px solid #dddddd;
+}
+.pr-option-wrapper input, .pr-option-wrapper select, .pr-option-wrapper textarea {
+    display: block;
+    margin: 1em 0;
     min-width: 320px;
     padding: .5em 1.5em;
+}
+.pr-option-wrapper input[type=text] {
+    width: 100%;
+}
+.pr-option-wrapper textarea.pr-code {
+    font-family: 'Courier',monospace;
+    font-size: 1.3em;
+    color: darkcyan;
+    width: 100%;
+    min-height: 250px;
+}
+.pr-option-wrapper .description.error {
+    background: crimson;
+    color: white;
+    display: inline-block;
+    padding: 0.25em 1em .35em;
+    border-radius: .25em;
+}
+
+/* Styles with overrides */
+.input-error {
+    border-color: crimson !important;
 }
