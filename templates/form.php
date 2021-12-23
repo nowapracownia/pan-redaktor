@@ -21,7 +21,7 @@ $action_params = array('view' => 'form', 'action' => 'save');
         <select name="settings[pr_mode]" class="pr-input" id="pr-mode">
             <option value="">--</option>
             <option value="script" <?php if($Settings->getField('pr_mode')=='script') echo 'selected="selected"'; ?>>JavaScript</option>
-            <option value="filter" <?php if($Settings->getField('pr_mode')=='filter') echo 'selected="selected"'; ?>>Filtr WordPressa</option>
+            <option value="filter" <?php if($Settings->getField('pr_mode')=='filter') echo 'selected="selected"'; ?> disabled>Filtr WordPressa</option>
         </select>
         <?php if($Settings->hasError('pr_mode')): ?>
         <p class="description error"><?php echo $Settings->getError('pr_mode'); ?></p>
