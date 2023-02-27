@@ -6,7 +6,7 @@ ob_start();
      * Plugin URI: http://presspro.dev/pan-redaktor
      * Description: Pan Redaktor: plugin, który zadba o to, aby w Twoim tekście nie pozostawały wiszące spójniki.
      * Author: presspro::dev
-     * Version: 0.7
+     * Version: 0.8
      * Author URI: http://presspro.dev/
      */
 
@@ -23,7 +23,7 @@ class panRedaktor{
     // check plugin_Settings.php for options key names
 
     private $plugin_mode = 'dev'; // if dev mode, update version on activate if newer than previous
-    private $plugin_version = '0.7';
+    private $plugin_version = '0.8';
     private $user_capability = 'manage_options';
     private $model;
     private $action_token = 'pan-redaktor-action';
